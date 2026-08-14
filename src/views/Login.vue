@@ -67,15 +67,6 @@ input {
   box-sizing: border-box;
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
 
 button:hover {
   background: #1d4ed8;
