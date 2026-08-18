@@ -420,3 +420,265 @@ td {
     padding: 0 20px;
   }
 }
+
+/* ========================================
+   FILTER
+======================================== */
+
+.filter-bar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.filter-bar input,
+.filter-bar select {
+  padding: 13px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  outline: none;
+}
+
+.filter-bar input {
+  flex: 1;
+}
+
+.filter-bar select {
+  min-width: 200px;
+}
+
+.filter-bar input:focus,
+.filter-bar select:focus {
+  border-color: #4f46e5;
+}
+
+.result-info {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+
+/* ========================================
+   EDIT BUTTON
+======================================== */
+
+.edit-button {
+  border: none;
+  padding: 9px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.empty-state {
+  background: white;
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.empty-state h3 {
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: #6b7280;
+}
+
+
+/* ========================================
+   MODAL
+======================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 550px;
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+}
+
+.modal-header p {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.close-button {
+  border: none;
+  background: #f3f4f6;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+
+/* ========================================
+   FORM
+======================================== */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  padding: 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #4f46e5;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.cancel-button {
+  border: none;
+  background: #f3f4f6;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+/* ========================================
+   DETAIL
+======================================== */
+
+.detail-modal {
+  max-width: 500px;
+}
+
+.detail-content {
+  text-align: center;
+}
+
+.detail-icon {
+  width: 80px;
+  height: 80px;
+  background: #eef2ff;
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 40px;
+  margin: 0 auto 20px;
+}
+
+.detail-content h2 {
+  margin-bottom: 8px;
+}
+
+.detail-category {
+  color: #6b7280;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.detail-grid div {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.detail-grid span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.detail-grid strong {
+  font-size: 18px;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 700px) {
+
+  .filter-bar {
+    flex-direction: column;
+  }
+
+  .filter-bar select {
+    width: 100%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .product-actions {
+    flex-wrap: wrap;
+  }
+
+}
