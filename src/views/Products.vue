@@ -143,7 +143,7 @@
 
               <button
                 class="delete-button"
-                @click="hapusProdukDariList(product.id)"
+                @click="bukaKonfirmasiHapus(product)"
               >
                 Hapus
               </button>
@@ -442,6 +442,67 @@
 
 
     <!-- ================================= -->
+    <!-- MODAL KONFIRMASI HAPUS -->
+    <!-- ================================= -->
+
+    <div
+      v-if="productToDelete"
+      class="modal-overlay"
+      @click.self="batalHapus"
+    >
+
+      <div class="modal confirm-modal">
+
+        <div class="confirm-icon">
+          !
+        </div>
+
+
+        <h2>
+          Yakin ingin menghapus?
+        </h2>
+
+
+        <p>
+          Kamu akan menghapus barang:
+        </p>
+
+
+        <strong class="confirm-product-name">
+          {{ productToDelete.nama }}
+        </strong>
+
+
+        <p class="confirm-warning">
+          Data yang sudah dihapus tidak dapat dikembalikan.
+        </p>
+
+
+        <div class="form-actions">
+
+          <button
+            class="cancel-button"
+            @click="batalHapus"
+          >
+            Batal
+          </button>
+
+
+          <button
+            class="delete-confirm-button"
+            @click="konfirmasiHapus"
+          >
+            Ya, Hapus
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================= -->
     <!-- TOAST -->
     <!-- ================================= -->
 
@@ -504,6 +565,15 @@ const showForm = ref(false);
 const editingProduct = ref(null);
 
 const selectedProduct = ref(null);
+
+
+/*
+|--------------------------------------------------------------------------
+| KONFIRMASI DELETE
+|--------------------------------------------------------------------------
+*/
+
+const productToDelete = ref(null);
 
 
 /*
@@ -764,26 +834,57 @@ function tutupForm() {
 
 /*
 |--------------------------------------------------------------------------
-| DELETE
+| BUKA KONFIRMASI HAPUS
 |--------------------------------------------------------------------------
 */
 
-function hapusProdukDariList(id) {
+function bukaKonfirmasiHapus(product) {
 
-  const product =
-    products.value.find(
-      product =>
-        product.id === id
-    );
+  productToDelete.value = product;
+
+}
 
 
-  hapusProduk(id);
+/*
+|--------------------------------------------------------------------------
+| BATAL HAPUS
+|--------------------------------------------------------------------------
+*/
+
+function batalHapus() {
+
+  productToDelete.value = null;
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| KONFIRMASI HAPUS
+|--------------------------------------------------------------------------
+*/
+
+function konfirmasiHapus() {
+
+  if (!productToDelete.value) {
+    return;
+  }
+
+
+  const productName =
+    productToDelete.value.nama;
+
+
+  hapusProduk(
+    productToDelete.value.id
+  );
+
+
+  productToDelete.value = null;
 
 
   showToast(
-
-    `${product?.nama || "Barang"} berhasil dihapus.`
-
+    `${productName} berhasil dihapus.`
   );
 
 }
@@ -803,3 +904,77 @@ function lihatDetail(product) {
 }
 
 </script>
+
+
+<style scoped>
+
+.confirm-modal {
+  text-align: center;
+  max-width: 420px;
+}
+
+.confirm-icon {
+  width: 55px;
+  height: 55px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fef3c7;
+
+  color: #92400e;
+
+  font-size: 28px;
+
+  font-weight: bold;
+}
+
+.confirm-modal h2 {
+  margin-bottom: 10px;
+}
+
+.confirm-modal p {
+  color: #6b7280;
+  margin: 6px 0;
+}
+
+.confirm-product-name {
+  display: block;
+
+  margin: 12px 0;
+
+  font-size: 18px;
+}
+
+.confirm-warning {
+  font-size: 13px;
+
+  margin-bottom: 25px !important;
+}
+
+.delete-confirm-button {
+  border: none;
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  background: #dc2626;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+.delete-confirm-button:hover {
+  background: #b91c1c;
+}
+
+</style>
