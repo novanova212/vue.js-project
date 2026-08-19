@@ -9,11 +9,16 @@
 
       <section class="dashboard-content">
 
+        <!-- HEADER -->
+
         <div class="page-actions">
 
           <div>
             <h2>Daftar Barang</h2>
-            <p>Kelola seluruh barang yang tersedia.</p>
+
+            <p>
+              Kelola seluruh barang yang tersedia.
+            </p>
           </div>
 
           <button
@@ -25,6 +30,8 @@
 
         </div>
 
+
+        <!-- SEARCH & FILTER -->
 
         <div class="filter-bar">
 
@@ -54,9 +61,15 @@
 
 
         <div class="result-info">
-          Menampilkan {{ filteredProducts.length }} barang
+
+          Menampilkan
+          {{ filteredProducts.length }}
+          barang
+
         </div>
 
+
+        <!-- PRODUCTS -->
 
         <div class="products-grid">
 
@@ -70,6 +83,7 @@
               📦
             </div>
 
+
             <div class="product-info">
 
               <h3>
@@ -81,7 +95,8 @@
               </span>
 
               <strong>
-                Rp {{ product.harga.toLocaleString("id-ID") }}
+                Rp
+                {{ product.harga.toLocaleString("id-ID") }}
               </strong>
 
               <small>
@@ -106,6 +121,8 @@
             </div>
 
 
+            <!-- ACTION -->
+
             <div class="product-actions">
 
               <button
@@ -115,12 +132,14 @@
                 Detail
               </button>
 
+
               <button
                 class="edit-button"
                 @click="bukaEdit(product)"
               >
                 Edit
               </button>
+
 
               <button
                 class="delete-button"
@@ -136,15 +155,21 @@
         </div>
 
 
+        <!-- EMPTY -->
+
         <div
           v-if="filteredProducts.length === 0"
           class="empty-state"
         >
-          <h3>Barang tidak ditemukan</h3>
+
+          <h3>
+            Barang tidak ditemukan
+          </h3>
 
           <p>
             Coba gunakan kata pencarian atau kategori lain.
           </p>
+
         </div>
 
       </section>
@@ -152,7 +177,9 @@
     </main>
 
 
+    <!-- ================================= -->
     <!-- MODAL TAMBAH / EDIT -->
+    <!-- ================================= -->
 
     <div
       v-if="showForm"
@@ -167,22 +194,27 @@
           <div>
 
             <h2>
+
               {{
                 editingProduct
                   ? "Edit Barang"
                   : "Tambah Barang"
               }}
+
             </h2>
 
             <p>
+
               {{
                 editingProduct
                   ? "Ubah informasi barang."
                   : "Masukkan informasi barang baru."
               }}
+
             </p>
 
           </div>
+
 
           <button
             class="close-button"
@@ -290,15 +322,18 @@
               Batal
             </button>
 
+
             <button
               type="submit"
               class="primary-button"
             >
+
               {{
                 editingProduct
                   ? "Simpan Perubahan"
                   : "Tambah Barang"
               }}
+
             </button>
 
           </div>
@@ -310,7 +345,9 @@
     </div>
 
 
+    <!-- ================================= -->
     <!-- MODAL DETAIL -->
+    <!-- ================================= -->
 
     <div
       v-if="selectedProduct"
@@ -334,6 +371,7 @@
 
           </div>
 
+
           <button
             class="close-button"
             @click="selectedProduct = null"
@@ -350,9 +388,11 @@
             📦
           </div>
 
+
           <h2>
             {{ selectedProduct.nama }}
           </h2>
+
 
           <span class="detail-category">
             {{ selectedProduct.kategori }}
@@ -368,10 +408,13 @@
               </span>
 
               <strong>
+
                 Rp
                 {{
-                  selectedProduct.harga.toLocaleString("id-ID")
+                  selectedProduct.harga
+                    .toLocaleString("id-ID")
                 }}
+
               </strong>
 
             </div>
@@ -397,6 +440,19 @@
 
     </div>
 
+
+    <!-- ================================= -->
+    <!-- TOAST -->
+    <!-- ================================= -->
+
+    <Toast
+      :show="toast.show"
+      :title="toast.title"
+      :message="toast.message"
+      :type="toast.type"
+      @close="toast.show = false"
+    />
+
   </div>
 </template>
 
@@ -407,9 +463,16 @@ import { ref, computed } from "vue";
 
 import Sidebar from "../components/Sidebar.vue";
 import Header from "../components/Header.vue";
+import Toast from "../components/Toast.vue";
 
 import { useProductStore } from "../stores/productStore";
 
+
+/*
+|--------------------------------------------------------------------------
+| PRODUCT STORE
+|--------------------------------------------------------------------------
+*/
 
 const {
   products,
@@ -419,9 +482,22 @@ const {
 } = useProductStore();
 
 
+/*
+|--------------------------------------------------------------------------
+| SEARCH
+|--------------------------------------------------------------------------
+*/
+
 const search = ref("");
 
 const kategoriFilter = ref("");
+
+
+/*
+|--------------------------------------------------------------------------
+| MODAL
+|--------------------------------------------------------------------------
+*/
 
 const showForm = ref(false);
 
@@ -430,102 +506,252 @@ const editingProduct = ref(null);
 const selectedProduct = ref(null);
 
 
+/*
+|--------------------------------------------------------------------------
+| FORM
+|--------------------------------------------------------------------------
+*/
+
 const form = ref({
+
   nama: "",
+
   kategori: "",
+
   harga: 0,
+
   stok: 0,
+
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| TOAST
+|--------------------------------------------------------------------------
+*/
+
+const toast = ref({
+
+  show: false,
+
+  title: "",
+
+  message: "",
+
+  type: "success",
+
+});
+
+
+function showToast(
+  message,
+  title = "Berhasil",
+  type = "success"
+) {
+
+  toast.value = {
+
+    show: true,
+
+    title,
+
+    message,
+
+    type,
+
+  };
+
+
+  setTimeout(() => {
+
+    toast.value.show = false;
+
+  }, 3000);
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| KATEGORI
+|--------------------------------------------------------------------------
+*/
 
 const kategoriList = computed(() => {
 
   return [
+
     ...new Set(
+
       products.value.map(
-        product => product.kategori
+
+        product =>
+          product.kategori
+
       )
+
     ),
+
   ];
 
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| FILTER
+|--------------------------------------------------------------------------
+*/
 
 const filteredProducts = computed(() => {
 
   return products.value.filter(product => {
 
     const cocokNama =
+
       product.nama
+
         .toLowerCase()
+
         .includes(
+
           search.value.toLowerCase()
+
         );
 
 
     const cocokKategori =
+
       !kategoriFilter.value ||
-      product.kategori === kategoriFilter.value;
+
+      product.kategori ===
+        kategoriFilter.value;
 
 
-    return cocokNama && cocokKategori;
+    return (
+
+      cocokNama &&
+      cocokKategori
+
+    );
 
   });
 
 });
 
 
+/*
+|--------------------------------------------------------------------------
+| TAMBAH
+|--------------------------------------------------------------------------
+*/
+
 function bukaTambah() {
 
   editingProduct.value = null;
 
+
   form.value = {
+
     nama: "",
+
     kategori: "",
+
     harga: 0,
+
     stok: 0,
+
   };
+
 
   showForm.value = true;
 
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| EDIT
+|--------------------------------------------------------------------------
+*/
 
 function bukaEdit(product) {
 
   editingProduct.value = product;
 
+
   form.value = {
+
     nama: product.nama,
+
     kategori: product.kategori,
+
     harga: product.harga,
+
     stok: product.stok,
+
   };
+
 
   showForm.value = true;
 
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| SIMPAN
+|--------------------------------------------------------------------------
+*/
 
 function simpanProduk() {
 
   if (editingProduct.value) {
 
     editProduk(
+
       editingProduct.value.id,
+
       form.value
+
+    );
+
+
+    showToast(
+
+      "Data barang berhasil diperbarui."
+
     );
 
   } else {
 
-    tambahProduk(form.value);
+    tambahProduk(
+
+      form.value
+
+    );
+
+
+    showToast(
+
+      "Barang baru berhasil ditambahkan."
+
+    );
 
   }
+
 
   tutupForm();
 
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| TUTUP FORM
+|--------------------------------------------------------------------------
+*/
 
 function tutupForm() {
 
@@ -536,16 +762,43 @@ function tutupForm() {
 }
 
 
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
 function hapusProdukDariList(id) {
 
+  const product =
+    products.value.find(
+      product =>
+        product.id === id
+    );
+
+
   hapusProduk(id);
+
+
+  showToast(
+
+    `${product?.nama || "Barang"} berhasil dihapus.`
+
+  );
 
 }
 
 
+/*
+|--------------------------------------------------------------------------
+| DETAIL
+|--------------------------------------------------------------------------
+*/
+
 function lihatDetail(product) {
 
-  selectedProduct.value = product;
+  selectedProduct.value =
+    product;
 
 }
 
